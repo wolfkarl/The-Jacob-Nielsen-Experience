@@ -34,6 +34,29 @@ void Application::processFrame()
 
 	// Sample code brightening up the depth image to make it visible
 	m_depthImage *= 32;
+
+	// save depthimage to temporary buffer and convert it to 8bit so 
+	// openCV doesn't crash. Shoutout to Team EpicHigh5
+	m_depthImage.copyTo(m_working);
+	m_working.convertTo(m_working, CV_8UC1);
+
+	// when starting the program, the floor should be empty. we save an
+	// image of the empty floor and subtract it from all following frames
+	if(uninitialized)
+	{
+		uninitialized = false;
+		m_working.copyTo(m_empty);
+	}
+
+	// subtract empty flloor
+	cv::absdiff(m_working, m_empty, m_working);
+
+
+	// make the floor black
+	//cv::threshold(m_working, m_working, 150, 255, 2); // truncate
+	//cv::threshold(m_working, m_working, 200, 255, 1); // inverted binary threshold
+
+	m_working.copyTo(m_outputImage);
 }
 
 ////////////////////////////////////////////////////////////////////////////////

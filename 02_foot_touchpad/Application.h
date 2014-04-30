@@ -48,6 +48,11 @@ class Application
 		cv::Mat m_depthImage;
 		cv::Mat m_outputImage;
 
+		cv::Mat m_working;
+		cv::Mat m_empty;
+
+		bool uninitialized;
+
 		bool m_isFinished;
 };
 
