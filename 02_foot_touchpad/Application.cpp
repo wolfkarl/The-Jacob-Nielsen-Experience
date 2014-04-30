@@ -38,23 +38,19 @@ void Application::processFrame()
 	// save depthimage to temporary buffer and convert it to 8bit so 
 	// openCV doesn't crash. Shoutout to Team EpicHigh5
 	m_depthImage.copyTo(m_working);
-	m_working.convertTo(m_working, CV_8UC1);
+	m_working.convertTo(m_working, CV_8UC1, 0.01);
+	
+	/* with normal tripod setup:
 
-	// when starting the program, the floor should be empty. we save an
-	// image of the empty floor and subtract it from all following frames
-	if(uninitialized)
-	{
-		uninitialized = false;
-		m_working.copyTo(m_empty);
-	}
+		# floor: 250
+		# shoe touching floor: 230
+		# everything above that: 220+
 
-	// subtract empty flloor
-	cv::absdiff(m_working, m_empty, m_working);
+	*/
 
 
-	// make the floor black
-	//cv::threshold(m_working, m_working, 150, 255, 2); // truncate
-	//cv::threshold(m_working, m_working, 200, 255, 1); // inverted binary threshold
+	cv::threshold(m_working, m_working, 240, 0, 4); // set the floor and everything farther away than the floor to black 
+	cv::threshold(m_working, m_working, 215, 0, 3); // also, set everything to black that's to far away from the floor
 
 	m_working.copyTo(m_outputImage);
 }
