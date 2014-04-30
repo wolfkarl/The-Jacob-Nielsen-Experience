@@ -10,6 +10,7 @@
 
 #include "DepthCamera.h"
 #include "DepthCameraException.h"
+#include <iostream>
 
 ////////////////////////////////////////////////////////////////////////////////
 //
@@ -48,11 +49,67 @@ void Application::processFrame()
 
 	*/
 
+	int thresh_upper = 225;
+	int thresh_lower = 240;
 
-	cv::threshold(m_working, m_working, 240, 0, 4); // set the floor and everything farther away than the floor to black 
-	cv::threshold(m_working, m_working, 215, 0, 3); // also, set everything to black that's to far away from the floor
+
+	cv::threshold(m_working, m_working, thresh_lower, 0, 4); // set the floor and everything farther away than the floor to black 
+	cv::threshold(m_working, m_working, thresh_upper, 0, 3); // also, set everything to black that's to far away from the floor
+
+	// now all thats left is feet touching the floor
+
+	// first we have to declare an array of arrays to store our contours
+
+	std::vector<std::vector<cv::Point>> contours; 
+	
+	// then we look for contours
+	
+	cv::findContours(m_working, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
+
+	// now we try to find the biggest contour...
+
+	double maxContourSize = 0;
+	double currContourSize;
+	int maxContourIndex;
+	int i;
+
+
+	// ... of course only if we have found any
+
+	if(contours.size() > 0)
+	{
+		for (i = 0; i < contours.size(); i++) {
+
+			currContourSize = cv::contourArea(contours[i]);
+
+			if (currContourSize > maxContourSize) {
+
+				maxContourSize = currContourSize;
+				maxContourIndex = i;
+
+			}
+
+		}
+	}
+
+	std::vector<cv::Point> maxContour = contours[maxContourIndex]; 
+	std::cout << maxContour.size() << "\n";
+
+
+	// small contours are probably just noise. only proceed if the contour is large
+	if (maxContour.size() > 100)
+	{
+		// fitting ellipses
+
+		cv::RotatedRect foot = cv::fitEllipse(maxContour);
+		circle(m_working, foot.center, 20, cv::Scalar(100,150,200,0), 2);
+		
+
+	}
+
 
 	m_working.copyTo(m_outputImage);
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
