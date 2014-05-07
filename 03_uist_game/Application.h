@@ -52,6 +52,8 @@ class Application
 		cv::Mat m_renderImage;
 
 		bool m_isFinished;
+
+		float angle;
 };
 
 #endif // __APPLICATION_H

@@ -59,6 +59,46 @@ void Application::handleSkeletonTracked(XnUInt16 userID)
 	// * userID: The ID of the user being tracked.
 	//
 	////////////////////////////////////////////////////////////////////////////
+
+	//std::cout << userID << " - You just activated my track card!!!!1\n";
+
+	// http://kinectcar.ronsper.com/docs/openni/classxn_1_1_skeleton_capability.html
+
+	// Skelett und Joints initialisieren: linke Hand, rechte Hand,
+	xn::SkeletonCapability skel = NULL;
+	XnSkeletonJointPosition links, rechts, base;
+
+	skel = DepthCamera::instance()->userGenerator().GetSkeletonCap();
+	skel.GetSkeletonJointPosition(userID, XN_SKEL_NECK, base);
+	skel.GetSkeletonJointPosition(userID, XN_SKEL_LEFT_HAND, links);
+	skel.GetSkeletonJointPosition(userID, XN_SKEL_RIGHT_HAND, rechts);
+
+	float speed = 0;
+	float maxSpeed = 2.0;
+	float new_angle = 0;
+	float angle_unit = 0.2;
+
+	int baseHoehe = base.position.Y;
+	int linksHoehe = links.position.Y;
+	int rechtsHoehe = rechts.position.Y;
+
+	if (linksHoehe >= baseHoehe)
+	{
+		speed = maxSpeed;
+		new_angle += angle_unit;
+	}
+
+	if (rechtsHoehe >= baseHoehe)
+	{
+		speed = maxSpeed;
+		new_angle -= angle_unit;
+	}
+
+	// (if both hands are lifted angle results in 0 again --> thingy is going straight)
+	angle += new_angle;
+	std::cout << userID << " :: Angle: " << angle << " (" << new_angle << ")\n"; 
+	m_gameClient->game()->moveUnit(userID-1, angle, speed);
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -107,6 +147,9 @@ Application::Application(int argc, char *argv[])
 	m_rgbImage = cv::Mat(480, 640, CV_8UC3);
 	m_depthImage = cv::Mat(480, 640, CV_16UC1);
 	m_renderImage = cv::Mat(480, 480, CV_8UC3);
+
+	angle = 0;
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -176,6 +219,11 @@ void Application::loop()
 			// Testing: Move the first unit west
 			if (m_gameClient->game())
 				m_gameClient->game()->moveUnit(0, M_PI, 1.0f);
+			break;
+
+		case 'r':
+			// Start game (hopefully)
+			m_gameServer->startGame();
 			break;
 
 		case 's':

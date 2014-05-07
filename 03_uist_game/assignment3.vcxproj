@@ -40,6 +40,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\The-Jacob-Nielsen-Experience\boost_1_47_0;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -50,14 +51,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__WIN32__;__x86__;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(OPEN_NI_INCLUDE);$(OPEN_CV_INCLUDE);C:\Program Files\boost\boost_1_47;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPEN_NI_INCLUDE);$(OPEN_CV_INCLUDE);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(OPEN_NI_LIB);$(OPEN_CV_LIB);C:\Program Files\boost\boost_1_47\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OpenNI.lib;opencv_core231d.lib;opencv_imgproc231d.lib;opencv_highgui231d.lib;opencv_video231d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;boost_system-vc100-mt-gd-1_47.lib;boost_signals-vc100-mt-gd-1_47.lib;boost_thread-vc100-mt-gd-1_47.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
+      <AdditionalLibraryDirectories>$(OPEN_NI_LIB);$(OPEN_CV_LIB);c:\The-Jacob-Nielsen-Experience\boost_1_47_0\stage\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenNI.lib;opencv_core231d.lib;opencv_imgproc231d.lib;opencv_highgui231d.lib;opencv_video231d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libcmt.lib;libcmtd.lib</IgnoreSpecificDefaultLibraries>
+      <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -92,6 +94,7 @@
     <ClCompile Include="game\GameObstacle.cpp" />
     <ClCompile Include="game\GameServer.cpp" />
     <ClCompile Include="game\GameUnit.cpp" />
+    <ClCompile Include="game\HighlightRequest.cpp" />
     <ClCompile Include="game\Logging.cpp" />
     <ClCompile Include="game\Message.cpp" />
     <ClCompile Include="game\MessageData.cpp" />
@@ -100,6 +103,7 @@
     <ClCompile Include="game\NetworkClient.cpp" />
     <ClCompile Include="game\NetworkServer.cpp" />
     <ClCompile Include="game\NetworkServerSession.cpp" />
+    <ClCompile Include="game\NewPlayerID.cpp" />
     <ClCompile Include="game\PlayerProfile.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
@@ -116,6 +120,7 @@
     <ClInclude Include="game\GameObstacle.h" />
     <ClInclude Include="game\GameServer.h" />
     <ClInclude Include="game\GameUnit.h" />
+    <ClInclude Include="game\HighlightRequest.h" />
     <ClInclude Include="game\Logging.h" />
     <ClInclude Include="game\Message.h" />
     <ClInclude Include="game\MessageData.h" />
@@ -125,6 +130,7 @@
     <ClInclude Include="game\NetworkClient.h" />
     <ClInclude Include="game\NetworkServer.h" />
     <ClInclude Include="game\NetworkServerSession.h" />
+    <ClInclude Include="game\NewPlayerID.h" />
     <ClInclude Include="game\PlayerProfile.h" />
   </ItemGroup>
   <ItemGroup>
