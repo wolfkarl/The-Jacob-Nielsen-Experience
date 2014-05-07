@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2966A51F-5F8C-407E-AC66-6ED3185BA7ED}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>hci</RootNamespace>
+    <ProjectName>assignment3</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;__WIN32__;__x86__;_CRT_SECURE_NO_WARNINGS;_WIN32_WINNT=0x0501;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(OPEN_NI_INCLUDE);$(OPEN_CV_INCLUDE);C:\Program Files\boost\boost_1_47;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(OPEN_NI_LIB);$(OPEN_CV_LIB);C:\Program Files\boost\boost_1_47\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenNI.lib;opencv_core231d.lib;opencv_imgproc231d.lib;opencv_highgui231d.lib;opencv_video231d.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;boost_system-vc100-mt-gd-1_47.lib;boost_signals-vc100-mt-gd-1_47.lib;boost_thread-vc100-mt-gd-1_47.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(OPEN_NI_INCLUDE);$(OPEN_CV_INCLUDE);$(ProjectDir)omniORB-4.1.5\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(OPEN_NI_LIB);$(OPEN_CV_LIB);$(ProjectDir)omniORB-4.1.5\lib\x86_win32</AdditionalLibraryDirectories>
+      <AdditionalDependencies>OpenNI.lib;opencv_core231.lib;opencv_imgproc231.lib;opencv_highgui231.lib;opencv_video231.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="DepthCamera.cpp" />
+    <ClCompile Include="DepthCameraException.cpp" />
+    <ClCompile Include="game\Game.cpp" />
+    <ClCompile Include="game\GameClient.cpp" />
+    <ClCompile Include="game\GameNetworkClient.cpp" />
+    <ClCompile Include="game\GameNetworkInterface.cpp" />
+    <ClCompile Include="game\GameNetworkServer.cpp" />
+    <ClCompile Include="game\GameObstacle.cpp" />
+    <ClCompile Include="game\GameServer.cpp" />
+    <ClCompile Include="game\GameUnit.cpp" />
+    <ClCompile Include="game\Logging.cpp" />
+    <ClCompile Include="game\Message.cpp" />
+    <ClCompile Include="game\MessageData.cpp" />
+    <ClCompile Include="game\MessageHandler.cpp" />
+    <ClCompile Include="game\MoveRequest.cpp" />
+    <ClCompile Include="game\NetworkClient.cpp" />
+    <ClCompile Include="game\NetworkServer.cpp" />
+    <ClCompile Include="game\NetworkServerSession.cpp" />
+    <ClCompile Include="game\PlayerProfile.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="DepthCamera.h" />
+    <ClInclude Include="DepthCameraException.h" />
+    <ClInclude Include="game\ForwardDeclarations.h" />
+    <ClInclude Include="game\Game.h" />
+    <ClInclude Include="game\GameClient.h" />
+    <ClInclude Include="game\GameNetworkClient.h" />
+    <ClInclude Include="game\GameNetworkInterface.h" />
+    <ClInclude Include="game\GameNetworkServer.h" />
+    <ClInclude Include="game\GameObstacle.h" />
+    <ClInclude Include="game\GameServer.h" />
+    <ClInclude Include="game\GameUnit.h" />
+    <ClInclude Include="game\Logging.h" />
+    <ClInclude Include="game\Message.h" />
+    <ClInclude Include="game\MessageData.h" />
+    <ClInclude Include="game\MessageHandler.h" />
+    <ClInclude Include="game\MessageTypes.h" />
+    <ClInclude Include="game\MoveRequest.h" />
+    <ClInclude Include="game\NetworkClient.h" />
+    <ClInclude Include="game\NetworkServer.h" />
+    <ClInclude Include="game\NetworkServerSession.h" />
+    <ClInclude Include="game\PlayerProfile.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SamplesConfig.xml" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
