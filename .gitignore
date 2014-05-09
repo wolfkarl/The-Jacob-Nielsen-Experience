@@ -3,3 +3,4 @@ Debug
 *.suo
 ipch
 *.user
+boost_*
