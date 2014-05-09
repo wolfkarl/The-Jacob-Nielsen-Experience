@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "HomographyTouchscreen", "HomographyTouchscreen.vcxproj", "{555CE9C9-EE31-0DE8-00E0-099A0317942B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{555CE9C9-EE31-0DE8-00E0-099A0317942B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{555CE9C9-EE31-0DE8-00E0-099A0317942B}.Debug|Win32.Build.0 = Debug|Win32
+		{555CE9C9-EE31-0DE8-00E0-099A0317942B}.Release|Win32.ActiveCfg = Release|Win32
+		{555CE9C9-EE31-0DE8-00E0-099A0317942B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
