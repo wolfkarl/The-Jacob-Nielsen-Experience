@@ -53,10 +53,13 @@ class Application
 		cv::Mat m_depthImage;
 		cv::Mat m_gameImage;
 		cv::Mat m_renderImage;
+		cv::Mat m_working;
+		cv::Mat m_base;
 
 		Calibration *m_calibration;
 
 		bool m_isFinished;
+		bool initialized;
 };
 
 #endif
