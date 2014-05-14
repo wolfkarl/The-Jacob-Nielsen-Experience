@@ -44,6 +44,13 @@ void Application::warpImage()
 	//                  you have computed.
 	//
 	////////////////////////////////////////////////////////////////////////////
+
+	// save renderimage to temporary mat
+	cv::Mat tmp;
+	m_renderImage.copyTo(tmp);
+
+	// to the matmobile, let's go!
+	cv::warpPerspective(tmp, m_renderImage, m_calibration->physicalToProjector(), m_renderImage.size());
 }
 
 ////////////////////////////////////////////////////////////////////////////////

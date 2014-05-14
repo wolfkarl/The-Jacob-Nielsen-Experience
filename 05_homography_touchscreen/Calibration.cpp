@@ -45,6 +45,30 @@ void Calibration::computeHomography()
 	// * m_cameraToPhysical
 	//
 	////////////////////////////////////////////////////////////////////////////
+
+	// jakob nielsen up in dis bitch!
+
+	// invent physical coordinates and save them to list
+	std::vector<cv::Point2f> physicalCoordinates;
+	physicalCoordinates.push_back(cv::Point2f(0,480)); // bottom left
+	physicalCoordinates.push_back(cv::Point2f(480,480)); // bottom right
+	physicalCoordinates.push_back(cv::Point2f(480,0)); // top right
+	physicalCoordinates.push_back(cv::Point2f(0,0)); // top left
+
+
+	// californibration
+	
+	// phys <--> proj
+	m_physicalToProjector = cv::getPerspectiveTransform(physicalCoordinates, m_projectorCoordinates);
+	m_projectorToPhysical = cv::getPerspectiveTransform(m_projectorCoordinates, physicalCoordinates);
+
+	// phys <--> cam
+	m_physicalToCamera = cv::getPerspectiveTransform(physicalCoordinates, m_cameraCoordinates);
+	m_cameraToPhysical = cv::getPerspectiveTransform(m_cameraCoordinates, physicalCoordinates);
+	
+	
+
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////
