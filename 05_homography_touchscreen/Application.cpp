@@ -74,6 +74,7 @@ void Application::processFrame()
 	
 	// Sample code brightening up the depth image to make it visible
 	m_depthImage *= 32;
+	bool new_input = false;
 
 	// save depthimage to temporary buffer and convert it to 8bit so 
 	// openCV doesn't crash. Shoutout to Team EpicHigh5
@@ -114,12 +115,13 @@ void Application::processFrame()
 	double maxContourSize = 0;
 	double currContourSize;
 	int maxContourIndex= -1;
-	int i;
+
 
 	// ... of course only if we have found any
 
 	if(contours.size() > 0)
 	{
+			int i;
 		for (i = 0; i < contours.size(); i++) {
 
 			currContourSize = cv::contourArea(contours[i]);
@@ -148,13 +150,16 @@ void Application::processFrame()
 			// fitting ellipses
 
 
-			cv::Point bla;
+			cv::Point input_proj;
 			cv::RotatedRect foot = cv::fitEllipse(maxContour);
-			std::cout << foot.center.x << " " << foot.center.y << "--> ";
-			bla = m_calibration->physicalToProjector() *  m_calibration->cameraToPhysical() * foot.center;
-			circle(m_renderImage, foot.center, 10, cv::Scalar(100,150,200,0), 2);
-			std::cout << foot.center.x << " " << foot.center.y << "\n";
-			circle(m_renderImage, bla, 10, cv::Scalar(200,100,200,0), 2);
+			//std::cout << foot.center.x << " " << foot.center.y << "--> ";
+			input = m_calibration->cameraToPhysical() * foot.center;
+			input_proj = m_calibration->physicalToProjector() *  m_calibration->cameraToPhysical() * foot.center;
+			//circle(m_renderImage, foot.center, 10, cv::Scalar(100,150,200,0), 2);
+			//std::cout << foot.center.x << " " << foot.center.y << "\n";
+			circle(m_renderImage, input, 10, cv::Scalar(200,100,200,0), 2);
+			new_input=1;
+			std::cout << input.x << "|" << input.y << " --- ";
 		}
 	} 
 
@@ -166,6 +171,55 @@ void Application::processFrame()
 	// control them.
 	//
 	////////////////////////////////////////////////////////////////////////////
+	
+
+
+	// loop of destiny (one loop to rule them all)
+
+	int i = 0;
+	int m = 5; // no. of units. being generic is so fun!
+	int tolerance = 40;
+
+	for (i = 0; i<m; i++)
+	{
+		GameUnitPtr u = m_gameClient->game()->unitByIndex(i);
+
+		if(new_input)
+		{
+			// was this unit just selected or deselected?
+			int distance = cv::norm(u->position() - input);
+			//std::cout << distance << " ";
+			std::cout << u->position().x << "|" << u->position().y << " ";
+			if (distance < tolerance)
+			{
+				// toggle highlightedness of unit
+				std::cout << "You tapped Unit no. " << (i+1) << "(distance: " << distance << ")\n";
+				//u->setHighlighted(!u->isHighlighted());
+				m_gameClient->game()->highlightUnit(i, !u->isHighlighted());
+			}
+		}
+
+		// everybody selected, please come to the last known foot position
+		// or you won't get any pudding
+		if(u->isHighlighted() && u->isLiving())
+		{
+			//float angle = std::atan(float(u->position().y - input.y) / (input.x - u->position().x ));
+		float angle;
+
+		double wurst = u->position().y - input.y;
+		double conchita = input.x - u->position().x;
+		if(conchita != 0 && wurst != 0){ angle = atan(wurst/conchita);
+		if (conchita < 0) { angle += M_PI; 	} else if (wurst < 0) { angle += 2*M_PI;}
+		} else if (wurst == 0){ if(conchita > 0){angle = M_PI;} else { 	angle = 0.0;}
+		} else { if(wurst > 0){	angle = 3 * M_PI / 2;} else {angle = M_PI / 2;}
+}
+			m_gameClient->game()->moveUnit(i, angle, 1.0f);
+		}
+
+
+
+	}
+	std::cout << "\n";
 }
 
 ////////////////////////////////////////////////////////////////////////////////
