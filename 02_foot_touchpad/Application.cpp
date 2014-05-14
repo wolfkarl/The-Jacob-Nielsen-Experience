@@ -39,40 +39,57 @@ void Application::processFrame()
 	// save depthimage to temporary buffer and convert it to 8bit so 
 	// openCV doesn't crash. Shoutout to Team EpicHigh5
 	m_depthImage.copyTo(m_working);
-	m_working.convertTo(m_working, CV_8UC1, 0.01);
+	m_working.convertTo(m_working, CV_8UC1, 0.006, 0); // very important magic number
+
+	if (!initialized)
+	{
+		std::cout << "Initialize!\n\n";
+		m_working.copyTo(m_base);
+		initialized = 1;
+	}
 	
-	/* with normal tripod setup:
+	// generic shit: remove floor from image
+	cv::absdiff(m_base, m_working, m_working);
 
-		# floor: 250
-		# shoe touching floor: 230
-		# everything above that: 220+
-
-	*/
-
-	int thresh_upper = 225;
-	int thresh_lower = 240;
+	// lighten shit up
+	m_working *= 2;
 
 
-	cv::threshold(m_working, m_working, thresh_lower, 0, 4); // set the floor and everything farther away than the floor to black 
-	cv::threshold(m_working, m_working, thresh_upper, 0, 3); // also, set everything to black that's to far away from the floor
+
+	int thresh_upper = 50;
+	int thresh_lower = 10;
+	cv::threshold(m_working, m_working, thresh_upper, 0, 4);
+	cv::threshold(m_working, m_working, thresh_lower, 0, 3);
+
+
 
 	// now all thats left is feet touching the floor
 
+	// let's remove noise first
+	//cv::blur(m_working, m_working, cv::Size(5,5));
+
+
+	//cv::erode(m_working, m_working, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(12,12))); 
+	//cv::dilate(m_working,m_working, cv::getStructuringElement(cv::MORPH_RECT, cv::Size(12,12)));
+
+
+
+
+	
 	// first we have to declare an array of arrays to store our contours
 
 	std::vector<std::vector<cv::Point>> contours; 
 	
 	// then we look for contours
-	
+	//cv::Canny(m_working, m_working, 1, 3); 
 	cv::findContours(m_working, contours, CV_RETR_EXTERNAL, CV_CHAIN_APPROX_NONE);
 
 	// now we try to find the biggest contour...
 
 	double maxContourSize = 0;
 	double currContourSize;
-	int maxContourIndex;
+	int maxContourIndex= -1;
 	int i;
-
 
 	// ... of course only if we have found any
 
@@ -92,23 +109,30 @@ void Application::processFrame()
 		}
 	}
 
-	std::vector<cv::Point> maxContour = contours[maxContourIndex]; 
-	std::cout << maxContour.size() << "\n";
-
-
-	// small contours are probably just noise. only proceed if the contour is large
-	if (maxContour.size() > 100)
+	// have we found a suitable contour?
+	if (maxContourIndex >= 0)
 	{
-		// fitting ellipses
+		std::vector<cv::Point> maxContour = contours[maxContourIndex]; 
 
-		cv::RotatedRect foot = cv::fitEllipse(maxContour);
-		circle(m_working, foot.center, 20, cv::Scalar(100,150,200,0), 2);
+		std::cout << maxContour.size() << "\n";
+	
+
+		// small contours are probably just noise. only proceed if the contour is large
+		if (maxContour.size() > 100)
+		{
+			// fitting ellipses
+
+			cv::RotatedRect foot = cv::fitEllipse(maxContour);
+			circle(m_working, foot.center, 20, cv::Scalar(100,150,200,0), 2);
 		
 
-	}
-
+		}
+	} 
+	
+	
 
 	m_working.copyTo(m_outputImage);
+	//mask.copyTo(m_outputImage);
 
 }
 
@@ -137,6 +161,9 @@ Application::Application()
 	m_rgbImage = cv::Mat(480, 640, CV_8UC3);
 	m_depthImage = cv::Mat(480, 640, CV_16UC1),
 	m_outputImage = cv::Mat(480, 640, CV_8UC1);
+
+	// initialize initialize
+	initialized = false;
 }
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -40,6 +40,8 @@ class Application
 		void clearOutputImage();
 
 		bool isFinished();
+		bool initialized;
+		
 
 	protected:
 		DepthCamera *m_depthCamera;
@@ -47,11 +49,10 @@ class Application
 		cv::Mat m_rgbImage;
 		cv::Mat m_depthImage;
 		cv::Mat m_outputImage;
+		cv::Mat m_base;
 
 		cv::Mat m_working;
 		cv::Mat m_empty;
-
-		bool uninitialized;
 
 		bool m_isFinished;
 };
