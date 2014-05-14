@@ -78,7 +78,9 @@ void Application::processFrame()
 	// save depthimage to temporary buffer and convert it to 8bit so 
 	// openCV doesn't crash. Shoutout to Team EpicHigh5
 	m_depthImage.copyTo(m_working);
+	//cv::perspectiveTransform(m_depthImage, m_working, m_calibration->cameraToPhysical());
 	m_working.convertTo(m_working, CV_8UC1, 0.006, 0); // very important magic number
+	
 
 	if (!initialized)
 	{
@@ -137,7 +139,7 @@ void Application::processFrame()
 	{
 		std::vector<cv::Point> maxContour = contours[maxContourIndex]; 
 
-		std::cout << maxContour.size() << "\n";
+		//std::cout << maxContour.size() << "\n";
 
 
 		// small contours are probably just noise. only proceed if the contour is large
@@ -145,10 +147,14 @@ void Application::processFrame()
 		{
 			// fitting ellipses
 
+
+			cv::Point bla;
 			cv::RotatedRect foot = cv::fitEllipse(maxContour);
-			circle(m_renderImage, foot.center, 100, cv::Scalar(100,150,200,0), 2);
-
-
+			std::cout << foot.center.x << " " << foot.center.y << "--> ";
+			bla = m_calibration->physicalToProjector() *  m_calibration->cameraToPhysical() * foot.center;
+			circle(m_renderImage, foot.center, 10, cv::Scalar(100,150,200,0), 2);
+			std::cout << foot.center.x << " " << foot.center.y << "\n";
+			circle(m_renderImage, bla, 10, cv::Scalar(200,100,200,0), 2);
 		}
 	} 
 

@@ -60,6 +60,8 @@ class Application
 
 		bool m_isFinished;
 		bool initialized;
+
+		cv::Point input;
 };
 
 #endif
